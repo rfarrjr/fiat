@@ -61,7 +61,7 @@ public class CatsSchedulerConfig {
 
   @Bean
   AgentIntervalProvider agentIntervalProvider() {
-    return new DefaultAgentIntervalProvider(Long.parseLong(syncDelayMs), 10000);
+    return new DefaultAgentIntervalProvider(Long.parseLong(syncDelayMs));
   }
 
   @Bean
