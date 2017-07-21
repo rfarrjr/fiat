@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Netflix, Inc.
+ * Copyright 2015 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,26 @@
  * limitations under the License.
  */
 
-rootProject.name="fiat"
+package com.netflix.spinnaker.cats.module;
 
-include 'fiat-api',
-        'fiat-core',
-        'fiat-file',
-        'fiat-github',
-        'fiat-google-groups',
-        'fiat-ldap',
-        'fiat-roles',
-        'fiat-web',
-        'cats:cats-test',
-        'cats:cats-core',
-        'cats:cats-redis'
-        
+/**
+ * This class is used to identify classes (typically Schedulers) that are capable of returning the cats module they are
+ * associated with.
+ */
+public abstract class CatsModuleAware {
+  private CatsModule catsModule;
 
-def setBuildFile(project) {
-  project.buildFileName = "${project.name}.gradle"
-  project.children.each {
-    setBuildFile(it)
+  /**
+   * Set this object's cats module.
+   */
+  public void setCatsModule(CatsModule catsModule) {
+    this.catsModule = catsModule;
+  }
+
+  /**
+   * Get this object's cats module.
+   */
+  public CatsModule getCatsModule() {
+    return catsModule;
   }
 }
-
-rootProject.children.each {
-  setBuildFile(it)
-}
-

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Netflix, Inc.
+ * Copyright 2015 Netflix, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,22 @@
  * limitations under the License.
  */
 
-rootProject.name="fiat"
+package com.netflix.spinnaker.cats.agent;
 
-include 'fiat-api',
-        'fiat-core',
-        'fiat-file',
-        'fiat-github',
-        'fiat-google-groups',
-        'fiat-ldap',
-        'fiat-roles',
-        'fiat-web',
-        'cats:cats-test',
-        'cats:cats-core',
-        'cats:cats-redis'
-        
+import com.netflix.spinnaker.cats.provider.ProviderRegistry;
 
-def setBuildFile(project) {
-  project.buildFileName = "${project.name}.gradle"
-  project.children.each {
-    setBuildFile(it)
+public interface RunnableAgent extends Agent {
+  void run();
+
+  @Override
+  default AgentExecution getAgentExecution(ProviderRegistry providerRegistry) {
+    return new RunnableAgentExecution();
+  }
+
+  class RunnableAgentExecution implements AgentExecution {
+    @Override
+    public void executeAgent(Agent agent) {
+      ((RunnableAgent) agent).run();
+    }
   }
 }
-
-rootProject.children.each {
-  setBuildFile(it)
-}
-

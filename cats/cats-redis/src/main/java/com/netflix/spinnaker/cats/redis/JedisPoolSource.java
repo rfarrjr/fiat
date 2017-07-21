@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Netflix, Inc.
+ * Copyright 2014 Netflix, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,20 @@
  * limitations under the License.
  */
 
-rootProject.name="fiat"
+package com.netflix.spinnaker.cats.redis;
 
-include 'fiat-api',
-        'fiat-core',
-        'fiat-file',
-        'fiat-github',
-        'fiat-google-groups',
-        'fiat-ldap',
-        'fiat-roles',
-        'fiat-web',
-        'cats:cats-test',
-        'cats:cats-core',
-        'cats:cats-redis'
-        
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
-def setBuildFile(project) {
-  project.buildFileName = "${project.name}.gradle"
-  project.children.each {
-    setBuildFile(it)
-  }
+public class JedisPoolSource implements JedisSource {
+    private final JedisPool pool;
+
+    public JedisPoolSource(JedisPool pool) {
+        this.pool = pool;
+    }
+
+    @Override
+    public Jedis getJedis() {
+        return pool.getResource();
+    }
 }
-
-rootProject.children.each {
-  setBuildFile(it)
-}
-

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Netflix, Inc.
+ * Copyright 2015 Google, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,15 @@
  * limitations under the License.
  */
 
-rootProject.name="fiat"
+package com.netflix.spinnaker.cats.agent;
 
-include 'fiat-api',
-        'fiat-core',
-        'fiat-file',
-        'fiat-github',
-        'fiat-google-groups',
-        'fiat-ldap',
-        'fiat-roles',
-        'fiat-web',
-        'cats:cats-test',
-        'cats:cats-core',
-        'cats:cats-redis'
-        
-
-def setBuildFile(project) {
-  project.buildFileName = "${project.name}.gradle"
-  project.children.each {
-    setBuildFile(it)
-  }
+/**
+ * This interface is used to identify classes (typically Agents) that are capable of returning the name of the account
+ * they are associated with.
+ */
+public interface AccountAware {
+  /**
+   * Get the name of the account this object is associated with.
+   */
+  String getAccountName();
 }
-
-rootProject.children.each {
-  setBuildFile(it)
-}
-

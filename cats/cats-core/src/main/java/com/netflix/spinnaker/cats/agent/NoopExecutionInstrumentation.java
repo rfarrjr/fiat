@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Netflix, Inc.
+ * Copyright 2014 Netflix, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,29 +14,21 @@
  * limitations under the License.
  */
 
-rootProject.name="fiat"
+package com.netflix.spinnaker.cats.agent;
 
-include 'fiat-api',
-        'fiat-core',
-        'fiat-file',
-        'fiat-github',
-        'fiat-google-groups',
-        'fiat-ldap',
-        'fiat-roles',
-        'fiat-web',
-        'cats:cats-test',
-        'cats:cats-core',
-        'cats:cats-redis'
-        
+public class NoopExecutionInstrumentation implements ExecutionInstrumentation {
+    @Override
+    public void executionStarted(Agent agent) {
+        //noop
+    }
 
-def setBuildFile(project) {
-  project.buildFileName = "${project.name}.gradle"
-  project.children.each {
-    setBuildFile(it)
-  }
+    @Override
+    public void executionCompleted(Agent agent, long elapsedMs) {
+        //noop
+    }
+
+    @Override
+    public void executionFailed(Agent agent, Throwable cause) {
+        //noop
+    }
 }
-
-rootProject.children.each {
-  setBuildFile(it)
-}
-
